@@ -19,12 +19,8 @@ import java.util.Optional;
 @RequestMapping("/api/v2")
 public class LenguajesProgramacionController {
 
-    private LenguajesProgramacionService lenguajesService;
-
     @Autowired
-    public LenguajesProgramacionController(LenguajesProgramacionService lenguajesService){
-        this.lenguajesService = lenguajesService;
-    }
+    private LenguajesProgramacionService lenguajesService;
 
     @GetMapping("/lenguajes-programacion")
     public Map<String, Object> getLenguajesProgramacion(){

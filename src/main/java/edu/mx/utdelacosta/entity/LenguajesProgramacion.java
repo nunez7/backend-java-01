@@ -12,6 +12,14 @@ public class LenguajesProgramacion {
 
     private String nombre;
 
+    public LenguajesProgramacion() {
+    }
+
+    public LenguajesProgramacion(Integer id, String nombre) {
+        this.id = id;
+        this.nombre = nombre;
+    }
+
     public Integer getId() {
         return id;
     }
