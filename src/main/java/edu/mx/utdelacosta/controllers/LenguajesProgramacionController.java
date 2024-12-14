@@ -1,13 +1,12 @@
 package edu.mx.utdelacosta.controllers;
 
+import edu.mx.utdelacosta.dto.ResponseDTO;
 import edu.mx.utdelacosta.entity.LenguajesProgramacion;
 import edu.mx.utdelacosta.services.LenguajesProgramacionService;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.HashMap;
@@ -18,8 +17,12 @@ import java.util.Optional;
 @RequestMapping("/api/v2")
 public class LenguajesProgramacionController {
 
-    @Autowired
     private LenguajesProgramacionService lenguajesService;
+
+    @Autowired
+    public LenguajesProgramacionController(LenguajesProgramacionService lenguajesService){
+        this.lenguajesService = lenguajesService;
+    }
 
     @GetMapping("/lenguajes-programacion")
     public Map<String, Object> getLenguajesProgramacion(){
@@ -43,6 +46,28 @@ public class LenguajesProgramacionController {
             respuesta.put("body", lenguaje);
             return respuesta;
         }
+    }
+
+    @DeleteMapping("/lenguajes-programacion/{id}")
+    public ResponseDTO deleteLenguajeProgramacionPorId(@PathVariable Integer id, HttpServletResponse servletResponse){
+        Optional<LenguajesProgramacion> lenguaje = lenguajesService.busquedaPorId(id);
+
+        ResponseDTO respuesta = new ResponseDTO();
+
+        if(!lenguaje.isPresent()){
+            respuesta.setRespuesta("Lenguaje no disponible");
+            respuesta.setCodigo(404);
+            respuesta.setContenido("Lenguaje no encontrado, no se pudo eliminar el lenguaje");
+            servletResponse.setStatus(404);
+        }else{
+            lenguajesService.deletePorId(id);
+            respuesta.setRespuesta("Lenguaje eliminado");
+            respuesta.setCodigo(204);
+            respuesta.setContenido("El lenguaje se ha eliminado correctamente");
+            servletResponse.setStatus(204);
+        }
+
+        return respuesta;
     }
 
 }
