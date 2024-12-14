@@ -1,18 +1,11 @@
 package edu.mx.utdelacosta.dto;
 
+import jakarta.validation.constraints.NotNull;
+
 public class LenguajesProgramacionDTO {
 
-    Integer id;
-
+    @NotNull
     private String nombre;
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     public String getNombre() {
         return nombre;

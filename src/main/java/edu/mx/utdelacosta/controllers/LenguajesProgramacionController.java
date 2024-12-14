@@ -1,9 +1,11 @@
 package edu.mx.utdelacosta.controllers;
 
+import edu.mx.utdelacosta.dto.LenguajesProgramacionDTO;
 import edu.mx.utdelacosta.dto.ResponseDTO;
 import edu.mx.utdelacosta.entity.LenguajesProgramacion;
 import edu.mx.utdelacosta.services.LenguajesProgramacionService;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -46,6 +48,31 @@ public class LenguajesProgramacionController {
             respuesta.put("body", lenguaje);
             return respuesta;
         }
+    }
+
+    @PostMapping("/lenguajes-programacion")
+    public ResponseDTO guardarLenguaje(@RequestBody @Valid LenguajesProgramacionDTO lenguajeDTO, HttpServletResponse servletResponse){
+        LenguajesProgramacion lenguaje = lenguajesService.busquedaPorNombre(lenguajeDTO.getNombre().toUpperCase());
+
+        ResponseDTO respuesta = new ResponseDTO();
+        if(lenguaje != null){
+            respuesta.setRespuesta("Lenguaje no disponible");
+            respuesta.setCodigo(500);
+            respuesta.setContenido("El lenguaje ya existe en la DB, no se puede duplicar.");
+            servletResponse.setStatus(500);
+        }else{
+            //Mapeo de clases
+            LenguajesProgramacion lenguajeSave = new LenguajesProgramacion();
+            lenguajeSave.setNombre(lenguajeDTO.getNombre().toUpperCase());
+            //Servicio
+            LenguajesProgramacion lenguajeNuevo = lenguajesService.save(lenguajeSave);
+            //Respuesta
+            respuesta.setRespuesta("Lenguaje guardado");
+            respuesta.setCodigo(201);
+            respuesta.setContenido(lenguajeNuevo);
+            servletResponse.setStatus(201);
+        }
+        return respuesta;
     }
 
     @DeleteMapping("/lenguajes-programacion/{id}")

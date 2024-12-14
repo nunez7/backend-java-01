@@ -1,6 +1,5 @@
 package edu.mx.utdelacosta.services;
 
-import edu.mx.utdelacosta.dto.LenguajesProgramacionDTO;
 import edu.mx.utdelacosta.entity.LenguajesProgramacion;
 
 import java.util.List;
@@ -11,7 +10,7 @@ public interface LenguajesProgramacionService {
     List<LenguajesProgramacion> listaLenguajes();
     LenguajesProgramacion busquedaPorNombre(String nombre);
 
-    boolean save(LenguajesProgramacionDTO lenguaje);
+    LenguajesProgramacion save(LenguajesProgramacion lenguaje);
 
     void deletePorId(Integer id);
 

@@ -1,6 +1,5 @@
 package edu.mx.utdelacosta.services;
 
-import edu.mx.utdelacosta.dto.LenguajesProgramacionDTO;
 import edu.mx.utdelacosta.entity.LenguajesProgramacion;
 import edu.mx.utdelacosta.repository.LenguajesProgramacionRepository;
 import jakarta.transaction.Transactional;
@@ -27,8 +26,9 @@ public class LenguajesProgramacionServiceImpl implements LenguajesProgramacionSe
     }
 
     @Override
-    public boolean save(LenguajesProgramacionDTO lenguaje) {
-        return false;
+    @Transactional
+    public LenguajesProgramacion save(LenguajesProgramacion lenguaje) {
+        return repository.save(lenguaje);
     }
 
     @Override
